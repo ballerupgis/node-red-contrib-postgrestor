@@ -1,4 +1,4 @@
-#### With js update 2021-15-03, Dannny Morck
+#### With js update 2021-15-03, Danny Morck
 
 
 # node-red-contrib-postgrestor
