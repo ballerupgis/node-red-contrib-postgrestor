@@ -4,9 +4,9 @@ module.exports = function(RED) {
   const PgPool = require('pg').Pool;
   const co = require('co');
 
-  let pgPool = null;
-
+  
   function PostgresDBNode(n) {
+	let pgPool = null;
     let poolInstance = null;
     const node = this;
 
@@ -40,7 +40,9 @@ module.exports = function(RED) {
         return poolInstance;
       }
     }
-    pgPool = new Pool();
+
+	pgPool = new Pool();
+    this.pgPool = pgPool;   
   }
 
   RED.nodes.registerType('postgresDB', PostgresDBNode, {
@@ -52,7 +54,6 @@ module.exports = function(RED) {
 
   function PostgrestorNode(config) {
     const node = this;
-
     RED.nodes.createNode(node, config);
     node.topic = config.topic;
     node.config = RED.nodes.getNode(config.postgresDB);
@@ -63,7 +64,7 @@ module.exports = function(RED) {
       };
       co(
         function* () {
-          let client = yield pgPool
+          let client = yield node.config.pgPool
             .connect()
             .catch((error) => {
             node.error(error);
